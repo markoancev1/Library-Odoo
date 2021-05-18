@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="librarian_kanban_view">
+            <field name="name">library.librarian.kanban</field>
+            <field name="model">library.librarian</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <div class="oe_dropdown_kanban d-flex justify-content-end p-2">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="edit">Edit</a>
+                                            </li>
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"/>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Library name:
+                                    <field name="librarian_firstname"/>
+                                    <br/>
+                                    Library email:
+                                    <field name="librarian_email"/>
+                                    <br/>
+                                    Number of libraries:
+                                    <field name="no_of_libraries"/>
+                                    <br/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="librarian_form_view">
+            <field name="name">library.librarian.form</field>
+            <field name="model">library.librarian</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name='librarian_image' widget="image" class="oe_left oe_avatar"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="librarian_firstname"/>
+                                <field name="librarian_lastname"/>
+                            </group>
+                            <group>
+                                <field name="librarian_email"/>
+                                <field name="librarian_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="librarian_library">
+                                <tree>
+                                    <field name="library_name"/>
+                                    <field name="library_date"/>
+                                    <field name="library_country"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="librarian_list_view">
+            <field name="name">library.librarian.list</field>
+            <field name="model">library.librarian</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="librarian_firstname"/>
+                    <field name="librarian_lastname"/>
+                    <field name="librarian_email"/>
+                    <field name="librarian_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="librarian_action">
+            <field name="name">Librarians</field>
+            <field name="res_model">library.librarian</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Librarian.
+                </p>
+            </field>
+
+        </record>
+
+        <menuitem name="Librarian" id="library.menu_librarian" action="librarian_action" parent="library.menu_root"
+                  sequence="1"/>
+
+
+    </data>
+</odoo>

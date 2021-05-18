@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report
+            id="report_library_card"
+            string="Library Card"
+            model="library.library"
+            report_type="qweb-pdf"
+            file="library.report_library"
+            name="library.report_library"
+            print_report_name="(object.library_name)"
+            menu="True"
+    />
+
+    <report
+            id="report_librarian_card"
+            string="Librarian Card"
+            model="library.librarian"
+            report_type="qweb-pdf"
+            file="library.report_librarian"
+            name="library.report_librarian"
+            print_report_name="(object.librarian_firstname) + ' ' + (object.librarian_lastname)"
+            menu="True"
+    />
+
+
+</odoo>

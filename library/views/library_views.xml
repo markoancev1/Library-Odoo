@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="library_kanban_view">
+            <field name="name">library.library.kanban</field>
+            <field name="model">library.library</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <div class="oe_dropdown_kanban d-flex justify-content-end p-2">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="edit">Edit</a>
+                                            </li>
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"/>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Library name:
+                                    <field name="library_name"/>
+                                    <br/>
+                                    Library email:
+                                    <field name="library_email"/>
+                                    <br/>
+                                    Library country:
+                                    <field name="library_country"/>
+                                    <br/>
+                                    Number of librarians:
+                                    <field name="no_of_librarians"/>
+                                    <br/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="library_form_view">
+            <field name="name">library.library.form</field>
+            <field name="model">library.library</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_public" type="object" string="Public" states="draft,private"
+                                class="oe_highlight"/>
+                        <button name="action_private" type="object" string="Private" states="public"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,public,private"/>
+                    </header>
+                    <sheet>
+                        <div group="oe_title">
+                            <H1>
+                                <field name="name_seq" readonly="1"/>
+                            </H1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="library_name"/>
+                                <field name="library_email"/>
+                                <field name="library_country"/>
+                            </group>
+                            <group>
+                                <field name="library_date"/>
+
+                            </group>
+                        </group>
+                        <group>
+                            <field name="library_description"/>
+                        </group>
+                        <group>
+                            <field name="library_librarian">
+                                <tree>
+                                    <field name="librarian_firstname"/>
+                                    <field name="librarian_lastname"/>
+                                    <field name="librarian_email"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="library_list_view">
+            <field name="name">library.library.list</field>
+            <field name="model">library.library</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name_seq"/>
+                    <field name="library_name"/>
+                    <field name="library_email"/>
+                    <field name="library_country"/>
+                    <field name="state"/>
+                    <field name="library_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="library_library_search">
+            <field name="name">library.library.search</field>
+            <field name="model">library.library</field>
+            <field name="arch" type="xml">
+                <search string="Search library">
+                    <field name="library_name"/>
+                    <field name="library_country"/>
+                    <separator/>
+                    <filter string="Macedonia" name="macedonia" domain="[('library_country', '=', '1')]"/>
+                    <filter string="Serbia" name="serbia" domain="[('library_country', '=', '2')]"/>
+                    <filter string="Croatia" name="croatia" domain="[('library_country', '=', '3')]"/>
+                    <filter string="Public" name="public" domain="[('state', '=', 'public')]"/>
+                    <filter string="Private" name="private" domain="[('state', '=', 'private')]"/>
+                    <group expand="0" string="Group by">
+                        <field string="Countries" name="library_country" context="{'group_by' : 'library_country'}"/>
+                        <field string="Status" name="state" context="{'group_by' : 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="library_action">
+            <field name="name">Libraries</field>
+            <field name="res_model">library.library</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first library.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Libraries" id="library.menu_library" action="library_action" parent="library.menu_root"
+                  sequence="1"/>
+
+    </data>
+</odoo>
