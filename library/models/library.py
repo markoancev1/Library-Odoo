@@ -2,7 +2,7 @@
 #
 import logging
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import re
 
@@ -38,6 +38,10 @@ class Library(models.Model):
         required=True,
         copy=False,
         default='New')
+
+    library_image = fields.Binary(
+        string="Image"
+    )
 
     library_name = fields.Char(
         string="Name",
@@ -159,3 +163,15 @@ class Library(models.Model):
     def action_private(self):
         for record in self:
             record.state = "private"
+
+    def action_show_librarians(self):
+        self.ensure_one()
+        return {
+            'name': _('Librarians'),
+            'view_mode': 'tree,form',
+            'res_model': 'library.librarian',
+            'type': 'ir.actions.act_window',
+            'context': {'create': False, 'delete': False},
+            'domain': [('id','in', self.library_librarian.ids)],
+            'target': 'current',
+        }

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import re
 
@@ -24,6 +24,13 @@ class Librarian(models.Model):
          'unique(librarian_email)',
          'The email has already been taken by another librarian.')
     ]
+
+    name_seq = fields.Char(
+        string="ID",
+        readonly=True,
+        required=True,
+        copy=False,
+        default='New')
 
     librarian_image = fields.Binary(
         string="Image"
@@ -65,6 +72,14 @@ class Librarian(models.Model):
         default=0
     )
 
+    @api.model
+    def create(self, vals):
+        if vals.get('name_seq', 'New') == 'New':
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code(
+                'library.librarian.sequence') or 'New'
+        result = super(Librarian, self).create(vals)
+        return result
+
     @api.depends('librarian_library')
     def _num_of_libraries(self):
         for record in self:
@@ -104,3 +119,15 @@ class Librarian(models.Model):
                     raise ValidationError(
                         "The email you have entered is not valid."
                     )
+
+    def action_show_libraries(self):
+        self.ensure_one()
+        return {
+            'name': _('Libraries'),
+            'view_mode': 'tree,form',
+            'res_model': 'library.library',
+            'type': 'ir.actions.act_window',
+            'context': {'create': False, 'delete': False},
+            'domain': [('id', 'in', self.librarian_library.ids)],
+            'target': 'current',
+        }

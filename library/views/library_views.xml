@@ -50,7 +50,7 @@
             <field name="name">library.library.form</field>
             <field name="model">library.library</field>
             <field name="arch" type="xml">
-                <form>
+                <form class="oe_button_box" name="button_box">
                     <header>
                         <button name="action_public" type="object" string="Public" states="draft,private"
                                 class="oe_highlight"/>
@@ -59,20 +59,32 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,public,private"/>
                     </header>
                     <sheet>
-                        <div group="oe_title">
-                            <H1>
-                                <field name="name_seq" readonly="1"/>
-                            </H1>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_librarians" type="object" class="oe_stat_button"
+                                    icon="fa-users">
+                                <field string="Librarians" name="no_of_librarians" widget="statinfo"/>
+                            </button>
                         </div>
+                        <group>
+                            <group>
+                                <div group="oe_title">
+                                    <H1>
+                                        <field name="name_seq" readonly="1"/>
+                                    </H1>
+                                </div>
+                            </group>
+                            <group>
+                                <field name='library_image' widget="image" class="oe_left oe_avatar"/>
+                            </group>
+                        </group>
                         <group>
                             <group>
                                 <field name="library_name"/>
                                 <field name="library_email"/>
-                                <field name="library_country"/>
                             </group>
                             <group>
+                                <field name="library_country"/>
                                 <field name="library_date"/>
-
                             </group>
                         </group>
                         <group>
@@ -117,7 +129,6 @@
             <field name="arch" type="xml">
                 <search string="Search library">
                     <field name="library_name"/>
-                    <field name="library_country"/>
                     <separator/>
                     <filter string="Macedonia" name="macedonia" domain="[('library_country', '=', '1')]"/>
                     <filter string="Serbia" name="serbia" domain="[('library_country', '=', '2')]"/>

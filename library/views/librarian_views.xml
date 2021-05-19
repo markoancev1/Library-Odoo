@@ -49,8 +49,23 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_libraries" type="object" class="oe_stat_button"
+                                    icon="fa-users">
+                                <field string="Libraries" name="no_of_libraries" widget="statinfo"/>
+                            </button>
+                        </div>
                         <group>
-                            <field name='librarian_image' widget="image" class="oe_left oe_avatar"/>
+                            <group>
+                                <div group="oe_title">
+                                    <H1>
+                                        <field name="name_seq" readonly="1"/>
+                                    </H1>
+                                </div>
+                            </group>
+                            <group>
+                                <field name='librarian_image' widget="image" class="oe_left oe_avatar"/>
+                            </group>
                         </group>
                         <group>
                             <group>
@@ -85,6 +100,7 @@
             <field name="model">library.librarian</field>
             <field name="arch" type="xml">
                 <tree>
+                    <field name="name_seq"/>
                     <field name="librarian_firstname"/>
                     <field name="librarian_lastname"/>
                     <field name="librarian_email"/>
