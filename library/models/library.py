@@ -32,7 +32,7 @@ class Library(models.Model):
          'The email has already been taken by another library.')
     ]
 
-    name_seq = fields.Char(
+    library_seq = fields.Char(
         string="ID",
         readonly=True,
         required=True,
@@ -85,6 +85,13 @@ class Library(models.Model):
         required=False
     )
 
+    agreement = fields.One2many(
+        'library.agreement',
+        'library_ids',
+        required=False,
+        readonly=True,
+        string='Agreements')
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('public', 'Public'),
@@ -103,10 +110,16 @@ class Library(models.Model):
         track_visibility="onchange"
     )
 
+    no_of_agreements = fields.Integer(
+        compute='_num_of_agreements',
+        string="Number of agreements",
+        default=0,
+    )
+
     @api.model
     def create(self, vals):
-        if vals.get('name_seq', 'New') == 'New':
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code(
+        if vals.get('library_seq', 'New') == 'New':
+            vals['library_seq'] = self.env['ir.sequence'].next_by_code(
                 'library.library.sequence') or 'New'
         result = super(Library, self).create(vals)
         return result
@@ -115,6 +128,11 @@ class Library(models.Model):
     def _num_of_librarians(self):
         for record in self:
             record.no_of_librarians = len(record.library_librarian)
+
+    @api.depends('agreement')
+    def _num_of_agreements(self):
+        for record in self:
+            record.no_of_agreements = len(record.agreement)
 
     def name_get(self):
         name = []
@@ -172,6 +190,18 @@ class Library(models.Model):
             'res_model': 'library.librarian',
             'type': 'ir.actions.act_window',
             'context': {'create': False, 'delete': False},
-            'domain': [('id','in', self.library_librarian.ids)],
+            'domain': [('id', 'in', self.library_librarian.ids)],
+            'target': 'current',
+        }
+
+    def action_show_agreements(self):
+        self.ensure_one()
+        return {
+            'name': _('Agreements'),
+            'view_mode': 'tree,form',
+            'res_model': 'library.agreement',
+            'type': 'ir.actions.act_window',
+            'context': {'create': False, 'delete': False},
+            'domain': [('id', 'in', self.agreement.ids)],
             'target': 'current',
         }

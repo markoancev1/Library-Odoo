@@ -13,5 +13,11 @@
             <field name="prefix">MEM</field>
             <field name="padding">3</field>
         </record>
+        <record id="seq_library_agreement" model="ir.sequence">
+            <field name="name">Agreement Name</field>
+            <field name="code">library.agreement.sequence</field>
+            <field name="prefix">DOC</field>
+            <field name="padding">3</field>
+        </record>
     </data>
 </odoo>

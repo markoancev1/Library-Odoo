@@ -25,7 +25,7 @@ class Librarian(models.Model):
          'The email has already been taken by another librarian.')
     ]
 
-    name_seq = fields.Char(
+    librarian_seq = fields.Char(
         string="ID",
         readonly=True,
         required=True,
@@ -66,6 +66,13 @@ class Librarian(models.Model):
         readonly=True
     )
 
+    agreement = fields.One2many(
+        'library.agreement',
+        'librarian_ids',
+        required=False,
+        readonly=True,
+        string='Agreements')
+
     no_of_libraries = fields.Integer(
         compute='_num_of_libraries',
         string="Number of libraries",
@@ -73,10 +80,16 @@ class Librarian(models.Model):
         default=0
     )
 
+    no_of_agreements = fields.Integer(
+        compute='_num_of_agreements',
+        string="Number of agreements",
+        default=0
+    )
+
     @api.model
     def create(self, vals):
-        if vals.get('name_seq', 'New') == 'New':
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code(
+        if vals.get('librarian_seq', 'New') == 'New':
+            vals['librarian_seq'] = self.env['ir.sequence'].next_by_code(
                 'library.librarian.sequence') or 'New'
         result = super(Librarian, self).create(vals)
         return result
@@ -85,6 +98,11 @@ class Librarian(models.Model):
     def _num_of_libraries(self):
         for record in self:
             record.no_of_libraries = len(record.librarian_library)
+
+    @api.depends('agreement')
+    def _num_of_agreements(self):
+        for record in self:
+            record.no_of_agreements = len(record.agreement)
 
     def name_get(self):
         name = []
@@ -130,5 +148,17 @@ class Librarian(models.Model):
             'type': 'ir.actions.act_window',
             'context': {'create': False, 'delete': False},
             'domain': [('id', 'in', self.librarian_library.ids)],
+            'target': 'current',
+        }
+
+    def action_show_agreements(self):
+        self.ensure_one()
+        return {
+            'name': _('Agreements'),
+            'view_mode': 'tree,form',
+            'res_model': 'library.agreement',
+            'type': 'ir.actions.act_window',
+            'context': {'create': False, 'delete': False},
+            'domain': [('id', 'in', self.agreement.ids)],
             'target': 'current',
         }

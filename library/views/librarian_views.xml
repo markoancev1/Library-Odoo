@@ -50,6 +50,10 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button name="action_show_agreements" type="object" class="oe_stat_button"
+                                    icon="fa-book">
+                                <field string="Agreements" name="no_of_agreements" widget="statinfo"/>
+                            </button>
                             <button name="action_show_libraries" type="object" class="oe_stat_button"
                                     icon="fa-users">
                                 <field string="Libraries" name="no_of_libraries" widget="statinfo"/>
@@ -59,7 +63,7 @@
                             <group>
                                 <div group="oe_title">
                                     <H1>
-                                        <field name="name_seq" readonly="1"/>
+                                        <field name="librarian_seq" readonly="1"/>
                                     </H1>
                                 </div>
                             </group>
@@ -80,11 +84,15 @@
                         <group>
                             <field name="librarian_library">
                                 <tree>
+                                    <field name="library_seq"/>
                                     <field name="library_name"/>
-                                    <field name="library_date"/>
+                                    <field name="library_email"/>
                                     <field name="library_country"/>
                                 </tree>
                             </field>
+                        </group>
+                        <group>
+                            <field name="agreement"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">
@@ -100,7 +108,7 @@
             <field name="model">library.librarian</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name_seq"/>
+                    <field name="librarian_seq"/>
                     <field name="librarian_firstname"/>
                     <field name="librarian_lastname"/>
                     <field name="librarian_email"/>

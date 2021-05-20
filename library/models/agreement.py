@@ -8,8 +8,15 @@ class Agreement(models.Model):
     _description = "Agreement"
     _inherit = 'mail.thread'
 
+    agreement_seq = fields.Char(
+        string="ID",
+        readonly=True,
+        required=True,
+        copy=False,
+        default='New')
+
     agreement_name = fields.Char(
-        string="Agreement name",
+        string="Name",
         help="The name of the agreement.",
         required=True,
     )
@@ -17,11 +24,13 @@ class Agreement(models.Model):
     library_ids = fields.Many2one(
         'library.library',
         required=True,
+        track_visibility="onchange",
         string='Libraries')
 
     librarian_ids = fields.Many2one(
         'library.librarian',
         required=True,
+        track_visibility="onchange",
         string='Librarians')
 
     agreement_file = fields.Many2many(
@@ -32,6 +41,24 @@ class Agreement(models.Model):
         string="Agreement files",
         required=False)
 
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('approved', 'Approved'),
+        ('denied', 'Denied'),
+    ], string='Status',
+        readonly='True',
+        default='draft',
+        track_visibility="onchange"
+    )
+
+    def action_approved(self):
+        for record in self:
+            record.state = "approved"
+
+    def action_denied(self):
+        for record in self:
+            record.state = "denied"
+
     def name_get(self):
         name = []
         for record in self:
@@ -39,3 +66,11 @@ class Agreement(models.Model):
                 record.id, record.agreement_name
             ))
         return name
+
+    @api.model
+    def create(self, vals):
+        if vals.get('agreement_seq', 'New') == 'New':
+            vals['agreement_seq'] = self.env['ir.sequence'].next_by_code(
+                'library.agreement.sequence') or 'New'
+        result = super(Agreement, self).create(vals)
+        return result

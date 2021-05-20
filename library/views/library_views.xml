@@ -50,7 +50,7 @@
             <field name="name">library.library.form</field>
             <field name="model">library.library</field>
             <field name="arch" type="xml">
-                <form class="oe_button_box" name="button_box">
+                <form>
                     <header>
                         <button name="action_public" type="object" string="Public" states="draft,private"
                                 class="oe_highlight"/>
@@ -60,6 +60,10 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button name="action_show_agreements" type="object" class="oe_stat_button"
+                                    icon="fa-book">
+                                <field string="Agreements" name="no_of_agreements" widget="statinfo"/>
+                            </button>
                             <button name="action_show_librarians" type="object" class="oe_stat_button"
                                     icon="fa-users">
                                 <field string="Librarians" name="no_of_librarians" widget="statinfo"/>
@@ -69,7 +73,7 @@
                             <group>
                                 <div group="oe_title">
                                     <H1>
-                                        <field name="name_seq" readonly="1"/>
+                                        <field name="library_seq" readonly="1"/>
                                     </H1>
                                 </div>
                             </group>
@@ -93,11 +97,15 @@
                         <group>
                             <field name="library_librarian">
                                 <tree>
+                                    <field name="librarian_seq"/>
                                     <field name="librarian_firstname"/>
                                     <field name="librarian_lastname"/>
                                     <field name="librarian_email"/>
                                 </tree>
                             </field>
+                        </group>
+                        <group>
+                            <field name="agreement"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">
@@ -113,7 +121,7 @@
             <field name="model">library.library</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name_seq"/>
+                    <field name="library_seq"/>
                     <field name="library_name"/>
                     <field name="library_email"/>
                     <field name="library_country"/>

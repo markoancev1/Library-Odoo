@@ -7,11 +7,25 @@
             <field name="model">library.agreement</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button name="action_approved" type="object" string="Approved" states="draft,denied"
+                                class="oe_highlight"/>
+                        <button name="action_denied" type="object" string="Denied" states="approved"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approved,denied"/>
+                    </header>
                     <sheet>
+                        <group>
+                            <div group="oe_title">
+                                <H1>
+                                    <field name="agreement_seq" readonly="1"/>
+                                </H1>
+                            </div>
+                        </group>
                         <group>
                             <group>
                                 <field name="agreement_name"/>
-                                <field name="library_ids"/>
+                                <field name="library_ids" domain="[('state', '!=', 'draft')]"/>
                                 <field name="librarian_ids"/>
                             </group>
                             <group>
@@ -33,6 +47,7 @@
             <field name="model">library.agreement</field>
             <field name="arch" type="xml">
                 <tree>
+                    <field name="agreement_seq" readonly="1"/>
                     <field name="agreement_name"/>
                     <field name="library_ids"/>
                     <field name="librarian_ids"/>
