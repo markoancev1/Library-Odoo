@@ -2,3 +2,4 @@
 
 from . import library
 from . import librarian
+from . import agreement

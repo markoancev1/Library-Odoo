@@ -65,6 +65,7 @@ class Librarian(models.Model):
         required=False,
         readonly=True
     )
+
     no_of_libraries = fields.Integer(
         compute='_num_of_libraries',
         string="Number of libraries",

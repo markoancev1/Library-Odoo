@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="agreement_form_view">
+            <field name="name">library.agreement.form</field>
+            <field name="model">library.agreement</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="agreement_name"/>
+                                <field name="library_ids"/>
+                                <field name="librarian_ids"/>
+                            </group>
+                            <group>
+                                <field name="agreement_file" widget="many2many_binary"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="agreement_list_view">
+            <field name="name">library.agreement.list</field>
+            <field name="model">library.agreement</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="agreement_name"/>
+                    <field name="library_ids"/>
+                    <field name="librarian_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="agreement_action">
+            <field name="name">Agreements</field>
+            <field name="res_model">library.agreement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first agreement.
+                </p>
+            </field>
+
+        </record>
+
+        <menuitem name="Agreement" id="library.menu_agreement" action="agreement_action" parent="library.menu_root"
+                  sequence="1"/>
+    </data>
+</odoo>

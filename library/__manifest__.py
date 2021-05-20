@@ -27,6 +27,7 @@
         'views/views.xml',
         'views/library_views.xml',
         'views/librarian_views.xml',
+        'views/agreement_views.xml',
         'data/sequence.xml',
         'views/templates.xml',
         'reports/library_card.xml',
