@@ -71,6 +71,7 @@ class Librarian(models.Model):
         'librarian_ids',
         required=False,
         readonly=True,
+        domain=[('state', '=', 'approved')],
         string='Agreements')
 
     no_of_libraries = fields.Integer(

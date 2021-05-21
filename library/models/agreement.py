@@ -24,13 +24,12 @@ class Agreement(models.Model):
     library_ids = fields.Many2one(
         'library.library',
         required=True,
-        track_visibility="onchange",
+        domain=[('state', 'in', ('public', 'private'))],
         string='Libraries')
 
     librarian_ids = fields.Many2one(
         'library.librarian',
         required=True,
-        track_visibility="onchange",
         string='Librarians')
 
     agreement_file = fields.Many2many(

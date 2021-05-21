@@ -82,7 +82,8 @@
                             </group>
                         </group>
                         <group>
-                            <field name="librarian_library">
+                            <field name="librarian_library"
+                                   options="{'no_create_edit': True}">
                                 <tree>
                                     <field name="library_seq"/>
                                     <field name="library_name"/>

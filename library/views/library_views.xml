@@ -95,7 +95,8 @@
                             <field name="library_description"/>
                         </group>
                         <group>
-                            <field name="library_librarian">
+                            <field name="library_librarian"
+                                   options="{'no_create_edit': True}">
                                 <tree>
                                     <field name="librarian_seq"/>
                                     <field name="librarian_firstname"/>

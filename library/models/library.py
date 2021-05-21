@@ -90,6 +90,7 @@ class Library(models.Model):
         'library_ids',
         required=False,
         readonly=True,
+        domain=[('state', '=', 'approved')],
         string='Agreements')
 
     state = fields.Selection([
