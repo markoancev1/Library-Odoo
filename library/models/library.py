@@ -19,7 +19,7 @@ email_pattern = r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*' \
 class Library(models.Model):
     _name = "library.library"
     _description = "Library"
-    _inherit = 'mail.thread',
+    _inherit = 'mail.thread', 'mail.activity.mixin'
 
     _sql_constraints = [
         ('unique_librarian',
@@ -55,6 +55,11 @@ class Library(models.Model):
         required=True,
     )
 
+    user_id = fields.Many2one(
+        'res.users',
+        string="PRO"
+    )
+
     library_date = fields.Date(
         string="Establishment",
         help="The date when the library was established.",
@@ -83,6 +88,7 @@ class Library(models.Model):
         "library_librarian",
         string="Librarians",
         required=False
+
     )
 
     agreement = fields.One2many(
@@ -92,6 +98,12 @@ class Library(models.Model):
         readonly=True,
         domain=[('state', '=', 'approved')],
         string='Agreements')
+
+    borrower_id = fields.Many2one(
+        'res.partner',
+        'Random User',
+        required=True
+    )
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -206,3 +218,8 @@ class Library(models.Model):
             'domain': [('id', 'in', self.agreement.ids)],
             'target': 'current',
         }
+
+    def action_send_card(self):
+        template_id = self.env.ref('library.patient_card_email_template').id
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)

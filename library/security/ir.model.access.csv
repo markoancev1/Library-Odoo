@@ -1,4 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_library_library,access.library.library,model_library_library,,1,1,1,1
-access_library_librarian,access.library.librarian,model_library_librarian,,1,1,1,1
-access_library_agreement,access.library.agreement,model_library_agreement,,1,1,1,1
+library_user_library,library user,model_library_library,group_library_user,1,0,1,0
+library_admin_library,library admin,model_library_library,group_library_admin,1,1,1,1
+library_user_librarian,library user,model_library_librarian,group_library_user,1,0,1,0
+library_admin_librarian,library admin,model_library_librarian,group_library_admin,1,1,1,1
+library_user_agreement,library user,model_library_agreement,group_library_user,1,0,1,0
+library_admin_agreement,library admin,model_library_agreement,group_library_admin,1,1,1,1

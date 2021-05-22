@@ -9,12 +9,13 @@
                 <form>
                     <header>
                         <button name="action_approved" type="object" string="Approved" states="draft,denied"
-                                class="oe_highlight"/>
+                                groups="library.group_library_admin" class="oe_highlight"/>
                         <button name="action_denied" type="object" string="Denied" states="approved"
-                                class="oe_highlight"/>
+                                groups="library.group_library_admin" class="oe_highlight"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,approved,denied"/>
                     </header>
                     <sheet>
+
                         <group>
                             <div group="oe_title">
                                 <H1>

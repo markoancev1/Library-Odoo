@@ -15,7 +15,7 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Productivity',
+    'category': 'Library',
     'version': '1.0',
 
     # any module necessary for this one to work correctly
@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'security/groups.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/library_views.xml',
@@ -33,6 +34,7 @@
         'reports/library_card.xml',
         'reports/librarian_card.xml',
         'reports/report.xml',
+        'data/mail_template.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
