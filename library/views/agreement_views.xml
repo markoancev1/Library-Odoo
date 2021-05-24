@@ -12,6 +12,8 @@
                                 groups="library.group_library_admin" class="oe_highlight"/>
                         <button name="action_denied" type="object" string="Denied" states="approved"
                                 groups="library.group_library_admin" class="oe_highlight"/>
+                        <button name="action_send_card" string="Download agreement"
+                                groups="library.group_library_admin" states="approved" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,approved,denied"/>
                     </header>
                     <sheet>
@@ -35,8 +37,9 @@
                                 <field name="agreement_file" widget="many2many_binary"/>
                             </group>
                         </group>
-
                     </sheet>
+                    <div class="o_attachment_preview"
+                         options="{types: ['image', 'pdf'], 'order':'desc'}"/>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
                         <field name="message_ids" widget="mail_thread"/>

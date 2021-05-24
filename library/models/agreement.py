@@ -32,6 +32,8 @@ class Agreement(models.Model):
         required=True,
         string='Librarians')
 
+    user_id = fields.Many2one('res.users')
+
     agreement_file = fields.Many2many(
         'ir.attachment',
         'class_ir_attachments_rel',
@@ -73,3 +75,9 @@ class Agreement(models.Model):
                 'library.agreement.sequence') or 'New'
         result = super(Agreement, self).create(vals)
         return result
+
+    def action_send_card(self):
+        # sending the patient report to patient via email
+        template_id = self.env.ref('library.agreement_email_template').id
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)

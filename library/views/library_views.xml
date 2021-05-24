@@ -52,8 +52,6 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_send_card" string="Send reminder"
-                                states="public,private" type="object"/>
                         <button name="action_public" type="object" string="Public" states="draft,private"
                                 groups="library.group_library_admin" class="oe_highlight"/>
                         <button name="action_private" type="object" string="Private" states="public"
@@ -111,6 +109,8 @@
                             <field name="agreement"/>
                         </group>
                     </sheet>
+                    <div class="o_attachment_preview"
+                         options="{types: ['image', 'pdf'], 'order':'desc'}"/>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_
                     followers"/>

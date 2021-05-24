@@ -1,27 +1,27 @@
 <?xml version="1.0" ?>
 <odoo>
     <data>
-        <record id="patient_card_email_template" model="mail.template">
-            <field name="name">Patient Card: Send by email</field>
-            <field name="model_id" ref="library.model_library_library"/>
+        <record id="agreement_email_template" model="mail.template">
+            <field name="name">Agreement</field>
+            <field name="model_id" ref="library.model_library_agreement"/>
             <field name="email_from">${object.user_id.email_formatted |safe}</field>
-            <field name="email_to">${object.library_librarian.librarian_email}</field>
-            <field name="subject">Patient Card (Ref ${object.library_librarian.librarian_seq})</field>
+            <field name="email_to">${object.librarian_ids.librarian_email}, ${object.library_ids.library_email}</field>
+            <field name="subject">Agreement (Ref ${object.agreement_seq})</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${object.library_librarian.librarian_firstname}
+                        Dear ${object.library_ids.library_name} and ${object.librarian_ids.librarian_firstname}
                         <br /><br />
-                        Here is your patient card with reference ${object.library_seq}
+                        Here is your agreement with reference ${object.agreement_seq}
                         <br /><br />
-                        Contact Number : ${object.library_name}
+                        with the following document : ${object.agreement_file}
                         <br /><br />
                         If you have queries feel free to ask.
                     </p>
                 </div>
             </field>
             <field name="report_template"/>
-            <field name="report_name">Patient Card_${(object.library_librarian.librarian_seq)}</field>
+            <field name="report_name">Agreement_${(object.agreement_seq)}</field>
         </record>
     </data>
 

@@ -55,10 +55,6 @@ class Library(models.Model):
         required=True,
     )
 
-    user_id = fields.Many2one(
-        'res.users',
-        string="PRO"
-    )
 
     library_date = fields.Date(
         string="Establishment",
@@ -99,11 +95,6 @@ class Library(models.Model):
         domain=[('state', '=', 'approved')],
         string='Agreements')
 
-    borrower_id = fields.Many2one(
-        'res.partner',
-        'Random User',
-        required=True
-    )
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -218,8 +209,3 @@ class Library(models.Model):
             'domain': [('id', 'in', self.agreement.ids)],
             'target': 'current',
         }
-
-    def action_send_card(self):
-        template_id = self.env.ref('library.patient_card_email_template').id
-        template = self.env['mail.template'].browse(template_id)
-        template.send_mail(self.id, force_send=True)
