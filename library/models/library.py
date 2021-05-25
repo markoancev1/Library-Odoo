@@ -55,7 +55,6 @@ class Library(models.Model):
         required=True,
     )
 
-
     library_date = fields.Date(
         string="Establishment",
         help="The date when the library was established.",
@@ -94,7 +93,6 @@ class Library(models.Model):
         readonly=True,
         domain=[('state', '=', 'approved')],
         string='Agreements')
-
 
     state = fields.Selection([
         ('draft', 'Draft'),

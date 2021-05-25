@@ -14,8 +14,6 @@
                         <br /><br />
                         Here is your agreement with reference ${object.agreement_seq}
                         <br /><br />
-                        with the following document : ${object.agreement_file}
-                        <br /><br />
                         If you have queries feel free to ask.
                     </p>
                 </div>

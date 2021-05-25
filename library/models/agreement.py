@@ -1,3 +1,5 @@
+import logging
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import re
@@ -7,6 +9,13 @@ class Agreement(models.Model):
     _name = "library.agreement"
     _description = "Agreement"
     _inherit = 'mail.thread'
+
+    _sql_constraints = [
+        ('unique_agreement',
+         'unique(library_ids, '
+         'librarian_ids)',
+         'The Agreement you are '
+         'trying to create already exists.')]
 
     agreement_seq = fields.Char(
         string="ID",
@@ -40,7 +49,7 @@ class Agreement(models.Model):
         'class_id',
         'attachment_id',
         string="Agreement files",
-        required=False)
+        required=True)
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -76,8 +85,22 @@ class Agreement(models.Model):
         result = super(Agreement, self).create(vals)
         return result
 
+    @api.constrains('agreement_file')
+    def _check_attachment(self):
+        for record in self:
+            if not record.agreement_file:
+                raise ValidationError(
+                    "You need to enter at least"
+                    " one attachment to proceed."
+                )
+
     def action_send_card(self):
-        # sending the patient report to patient via email
         template_id = self.env.ref('library.agreement_email_template').id
+        data_id = self.env['ir.attachment'].browse(self.agreement_file.ids)
         template = self.env['mail.template'].browse(template_id)
+        for existing_pdf in template.attachment_ids:
+            template.write({"attachment_ids": [(3, existing_pdf.id)]})
+        for pdf in data_id:
+            for att in pdf:
+                template.attachment_ids = [(4, att.id)]
         template.send_mail(self.id, force_send=True)
