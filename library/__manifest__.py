@@ -25,6 +25,7 @@
     'data': [
         'security/groups.xml',
         'security/ir.model.access.csv',
+        'data/cron.xml',
         'views/views.xml',
         'views/library_views.xml',
         'views/librarian_views.xml',

@@ -88,26 +88,37 @@
                             </group>
                             <group>
                                 <field name="library_country"/>
-                                <field name="library_date"/>
+                                <field name="library_date" readonly="1"/>
                             </group>
                         </group>
                         <group>
                             <field name="library_description"/>
                         </group>
-                        <group>
-                            <field name="library_librarian"
-                                   options="{'no_create_edit': True}">
-                                <tree>
-                                    <field name="librarian_seq"/>
-                                    <field name="librarian_firstname"/>
-                                    <field name="librarian_lastname"/>
-                                    <field name="librarian_email"/>
-                                </tree>
-                            </field>
-                        </group>
-                        <group>
-                            <field name="agreement"/>
-                        </group>
+                        <notebook>
+                            <page string="Librarians">
+                                <field name="library_librarian"
+                                       options="{'no_create_edit': True}">
+                                    <tree>
+                                        <field name="librarian_seq"/>
+                                        <field name="librarian_firstname"/>
+                                        <field name="librarian_lastname"/>
+                                        <field name="librarian_email"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Agreements">
+                                <field name="agreement"
+                                       options="{'no_create_edit': True}">
+                                    <tree>
+                                        <field name="agreement_seq"/>
+                                        <field name="agreement_name"/>
+                                        <field name="library_ids"/>
+                                        <field name="librarian_ids"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="o_attachment_preview"
                          options="{types: ['image', 'pdf'], 'order':'desc'}"/>

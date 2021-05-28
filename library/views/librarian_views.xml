@@ -81,20 +81,31 @@
                                 <field name="librarian_date"/>
                             </group>
                         </group>
-                        <group>
-                            <field name="librarian_library"
-                                   options="{'no_create_edit': True}">
-                                <tree>
-                                    <field name="library_seq"/>
-                                    <field name="library_name"/>
-                                    <field name="library_email"/>
-                                    <field name="library_country"/>
-                                </tree>
-                            </field>
-                        </group>
-                        <group>
-                            <field name="agreement"/>
-                        </group>
+                        <notebook>
+                            <page string="Libraries">
+                                <field name="librarian_library"
+                                       options="{'no_create_edit': True}">
+                                    <tree>
+                                        <field name="library_seq"/>
+                                        <field name="library_name"/>
+                                        <field name="library_email"/>
+                                        <field name="library_country"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Agreements">
+                                <field name="agreement"
+                                       options="{'no_create_edit': True}">
+                                    <tree>
+                                        <field name="agreement_seq"/>
+                                        <field name="agreement_name"/>
+                                        <field name="library_ids"/>
+                                        <field name="librarian_ids"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="o_attachment_preview"
                          options="{types: ['image', 'pdf'], 'order':'desc'}"/>

@@ -2,7 +2,12 @@ import logging
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from dateutil.relativedelta import relativedelta
 import re
+import logging
+
+
+# logging.info("afasffas")
 
 
 class Agreement(models.Model):
@@ -29,6 +34,15 @@ class Agreement(models.Model):
         help="The name of the agreement.",
         required=True,
     )
+
+    agreement_date = fields.Date(
+        'Created Date',
+        required=True,
+        default=fields.Date.today()
+    )
+
+    agreement_date_deadline = fields.Date(
+        default=lambda record: fields.Date.today() + relativedelta(days=30))
 
     library_ids = fields.Many2one(
         'library.library',
@@ -94,6 +108,12 @@ class Agreement(models.Model):
                     " one attachment to proceed."
                 )
 
+    @api.model
+    def process_scheduler_queue(self):
+        for rec in self.env["library.agreement"].search([('state', '!=', 'denied')]):
+            if rec.agreement_date_deadline and rec.agreement_date_deadline == fields.Date.today():
+                rec.write({'state': 'denied'})
+
     def action_send_card(self):
         template_id = self.env.ref('library.agreement_email_template').id
         data_id = self.env['ir.attachment'].browse(self.agreement_file.ids)
@@ -101,6 +121,6 @@ class Agreement(models.Model):
         for existing_pdf in template.attachment_ids:
             template.write({"attachment_ids": [(3, existing_pdf.id)]})
         for pdf in data_id:
-            for att in pdf:
-                template.attachment_ids = [(4, att.id)]
+            for new_pdf in pdf:
+                template.write({"attachment_ids": [(4, new_pdf.id)]})
         template.send_mail(self.id, force_send=True)

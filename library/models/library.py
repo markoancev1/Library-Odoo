@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 import logging
-
+from odoo.tools import email_split, email_escape_char
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import re
@@ -49,16 +49,16 @@ class Library(models.Model):
         required=True,
     )
 
+    library_date = fields.Date(
+        'Created Date',
+        required=True,
+        default=fields.Date.today()
+    )
+
     library_description = fields.Text(
         string="Description",
         help="Description of the library.",
         required=True,
-    )
-
-    library_date = fields.Date(
-        string="Establishment",
-        help="The date when the library was established.",
-        required=True
     )
 
     library_country = fields.Selection(
@@ -83,7 +83,6 @@ class Library(models.Model):
         "library_librarian",
         string="Librarians",
         required=False
-
     )
 
     agreement = fields.One2many(
@@ -91,7 +90,6 @@ class Library(models.Model):
         'library_ids',
         required=False,
         readonly=True,
-        domain=[('state', '=', 'approved')],
         string='Agreements')
 
     state = fields.Selection([
@@ -207,3 +205,16 @@ class Library(models.Model):
             'domain': [('id', 'in', self.agreement.ids)],
             'target': 'current',
         }
+
+    @api.model
+    def message_new(self, msg_dict, custom_values=None):
+        self = self.with_context(default_user_id=False)
+        if custom_values is None:
+            custom_values = {}
+        regex = re.compile("^\[(.*)\]")
+        match = regex.match(msg_dict.get('subject')).group(1)
+        book_id = self.env['library.book'].search([('name', '=', match), ('state', '=', 'available')], limit=1)
+        custom_values['book_id'] = book_id.id
+        email_from = email_escape_char(email_split(msg_dict.get('from'))[0])
+        custom_values['borrower_id'] = self._search_on_partner(email_from)
+        return super(Library, self).message_new(msg_dict, custom_values)
